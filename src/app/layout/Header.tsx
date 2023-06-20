@@ -22,7 +22,7 @@ export default function Header() {
           <Image src="/Logo.svg" width="100px" />
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse role="" id="basic-navbar-nav">
           {user && (
             <Nav className="ms-auto align-items-center">
               <NavLink
