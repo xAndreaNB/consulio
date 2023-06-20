@@ -1,0 +1,97 @@
+$primary: #ed3944;
+$secondary: #09042d;
+$body-bg: #fffbf9;
+$beige: #fffbf9;
+$danger: #dc3545;
+$success: #1cc88a;
+$darkBlue: #0e2780;
+$border-radius: 0.8rem;
+
+$input-btn-padding-y-lg: 0.75rem;
+$input-btn-padding-x-lg: 0.75rem;
+$border-radius-lg: 0.8rem;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "danger": $danger,
+  "success": $success,
+  "beige": $beige,
+  "darkBlue": $darkBlue,
+) !default;
+// scss-docs-end theme-colors-map
+
+@import "bootstrap/scss/bootstrap";
+
+.btn-primary {
+  color: #fff;
+}
+
+.fs-mini {
+  font-size: 0.8rem;
+}
+
+.flexAlignCenter {
+  display: flex;
+  align-items: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+hr {
+  width: 100%;
+  border: 1px solid white;
+  opacity: 1;
+}
+
+.g-6 {
+  --bs-gutter-x: 4rem;
+  --bs-gutter-y: 4rem;
+}
+
+.g-7 {
+  --bs-gutter-x: 5rem;
+  --bs-gutter-y: 5rem;
+}
+
+.g-8 {
+  --bs-gutter-x: 6rem;
+  --bs-gutter-y: 6rem;
+}
+
+.g-9 {
+  --bs-gutter-x: 7rem;
+  --bs-gutter-y: 7rem;
+}
+
+.g-10 {
+  --bs-gutter-x: 8rem;
+  --bs-gutter-y: 8rem;
+}
+
+.gx-6 {
+  --bs-gutter-x: 4rem;
+}
+
+.gx-10 {
+  --bs-gutter-x: 8rem;
+}
+
+.bg-login {
+  background: url("/bg-abstract.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.collapse {
+  transition: 0s !important;
+  &.show {
+    transition: 0s !important;
+  }
+}
+.collapsing{
+  transition: 0s !important;
+}
