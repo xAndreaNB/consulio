@@ -14,9 +14,13 @@ export default function KeluhanPage() {
 
   const onSubmit = async (data: any) => {
     try {
-      await setDoc(doc(db, "hasil-diagnosis", idDiagnosis), {
-        keluhanTambahan: data.keluhanTambahan,
-      });
+      await setDoc(
+        doc(db, "hasil-diagnosis", idDiagnosis),
+        {
+          keluhanTambahan: data.keluhanTambahan,
+        },
+        { merge: true }
+      );
       navigate(`/pilih-konseling?idDiagnosis=${idDiagnosis}`);
     } catch (err) {
       console.log(err);
