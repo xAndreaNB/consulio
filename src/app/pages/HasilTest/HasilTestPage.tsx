@@ -42,7 +42,7 @@ export default function HasilTestPage() {
             variant="primary"
             type="button"
             onClick={() =>
-              navigate(`/pilih-konseling?idDiagnosis=${idDiagnosis}`)
+              navigate(`/keluhan-tambahan?idDiagnosis=${idDiagnosis}`)
             }
             className="  px-5 py-3"
           >

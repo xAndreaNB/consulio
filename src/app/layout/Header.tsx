@@ -58,6 +58,42 @@ export default function Header() {
               </div>
             </Nav>
           )}
+          {!user && (
+            <>
+              <Nav className="ms-auto align-items-center">
+                <NavLink
+                  className="fw-bold ms-3"
+                  style={{
+                    textDecoration: "none",
+                    color: "var(--bs-gray-700)",
+                  }}
+                  to={"/home"}
+                >
+                  Home
+                </NavLink>
+                <NavLink
+                  className="fw-bold ms-3"
+                  style={{
+                    textDecoration: "none",
+                    color: "var(--bs-gray-700)",
+                  }}
+                  to={"/aboutus"}
+                >
+                  About Us
+                </NavLink>
+                <NavLink
+                  className="fw-bold ms-3"
+                  style={{
+                    textDecoration: "none",
+                    color: "var(--bs-gray-700)",
+                  }}
+                  to={"/login"}
+                >
+                  Login
+                </NavLink>
+              </Nav>
+            </>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

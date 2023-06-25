@@ -12,11 +12,42 @@ import { getItem } from "./app/helper/localstorage.helper";
 import LoginPage from "./app/pages/Login/LoginPage";
 import SignUpPage from "./app/pages/Login/SignUpPage";
 import Header from "./app/layout/Header";
+import HomePage from "./app/pages/Home/HomePage";
+import AboutUsPage from "./app/pages/AboutUs/AboutUsPage";
+import HasilTestPage from "./app/pages/HasilTest/HasilTestPage";
+import KonselorPage from "./app/pages/Konselor/KonselorPage";
+import TesKonselingPage from "./app/pages/TesKonseling/TesKonselingPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <IndexRouting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/*"
+          element={
+            <div>
+              <Header />
+              <div>
+                <Outlet />
+              </div>
+            </div>
+          }
+        >
+          <Route path="aboutus" element={<AboutUsPage />} />
+          <Route path="home" element={<HomePage />} />
+          <Route path="konselor" element={<KonselorPage />} />
+          <Route path="tes-konseling" element={<TesKonselingPage />} />
+          <Route path="hasil-tes/:kode" element={<HasilTestPage />} />
+        </Route>
+
         <Route
           path=""
           element={
@@ -30,18 +61,10 @@ function App() {
             </ProtectedRouteLogin>
           }
         >
-          <Route path="" element={<Navigate to={"login"} />}></Route>
+          <Route path="" element={<Navigate to={"home"} />}></Route>
           <Route path="signup" element={<SignUpPage />} />
           <Route path="login" element={<LoginPage />} />
         </Route>
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <IndexRouting />
-            </ProtectedRoute>
-          }
-        />
       </Routes>
     </BrowserRouter>
   );
@@ -64,6 +87,7 @@ const ProtectedRouteLogin = ({ children }: any) => {
     }
   };
   const auth = authCheck();
+  console.log("login", auth);
   if (!auth) {
     return children;
   } else {

@@ -89,7 +89,7 @@ export default function SignUp() {
           ...modal,
           show: true,
           title: "Error",
-          body: "email sudah terdaftar, silahkan coba untuk menggunakan email yang lain!",
+          body: "Email sudah terdaftar, silahkan coba untuk menggunakan email yang lain!",
         });
         setLoading(false);
       }
@@ -197,11 +197,11 @@ export default function SignUp() {
           </div>
         </Container>
         <Modal centered show={modal?.show} onHide={handleClose}>
-          <Modal.Header closeButton>
+          <Modal.Header className="border-0" closeButton>
             <Modal.Title>{modal?.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>{modal?.body}</Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className="border-0">
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>

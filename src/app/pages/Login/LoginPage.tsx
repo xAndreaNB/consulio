@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   Image,
+  Modal,
 } from "react-bootstrap";
 import Logo from "../../../icons/Logo";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -20,7 +21,7 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../../../firestore/firestore";
 import { getItem, setItem } from "../../helper/localstorage.helper";
-import { doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -31,6 +32,15 @@ export default function LoginPage() {
   } = useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [modal, setModal] = useState<{
+    show: boolean;
+    title: string;
+    body: string;
+  }>({
+    show: false,
+    title: "",
+    body: "",
+  });
   const renderErrorMessage = (name: string) => {
     return (
       <ErrorMessage
@@ -46,6 +56,9 @@ export default function LoginPage() {
   };
   const onSubmit = async (data: any) => {
     setLoading(true);
+    const hasilTest: any = sessionStorage.getItem("hasilTest");
+
+    console.log(hasilTest);
     setPersistence(auth, browserSessionPersistence).then(async () => {
       return await signInWithEmailAndPassword(auth, data.email, data.password)
         .then(async (userCredential) => {
@@ -64,16 +77,39 @@ export default function LoginPage() {
           if (userData?.role === "admin") {
             navigate("/admin");
           } else {
+            if (hasilTest) {
+              const hasilTestId = await addDoc(
+                collection(db, "hasil-diagnosis"),
+                {
+                  ...JSON.parse(hasilTest),
+                  user: user?.uid,
+                }
+              );
+              console.log(JSON.parse(hasilTest));
+              return navigate(
+                `/hasil-tes/${JSON.parse(hasilTest)?.hasil?.kode}?idDiagnosis=${
+                  hasilTestId.id
+                }`
+              );
+            }
+
             navigate("/home");
           }
         })
         .catch((error) => {
           setLoading(false);
+          setModal({
+            ...modal,
+            show: true,
+            title: "Login Gagal",
+            body: "Email atau password salah",
+          });
           const errorMessage = error.message;
           console.log(errorMessage);
         });
     });
   };
+  const handleClose = () => setModal({ ...modal, show: false });
   const renderInputForm = (
     name: string,
     label: string,
@@ -153,6 +189,20 @@ export default function LoginPage() {
             </Row>
           </div>
         </Container>
+        <Modal centered show={modal?.show} onHide={handleClose}>
+          <Modal.Header className="border-0" closeButton>
+            <Modal.Title>{modal?.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{modal?.body}</Modal.Body>
+          <Modal.Footer className="border-0">
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            {/* <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button> */}
+          </Modal.Footer>
+        </Modal>
       </div>
     </>
   );

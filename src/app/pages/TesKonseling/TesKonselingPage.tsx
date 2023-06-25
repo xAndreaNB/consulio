@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function TesKonselingPage() {
   const { register, watch, handleSubmit } = useForm();
+  const user = getItem("user");
 
   const navigate = useNavigate();
 
@@ -92,18 +93,31 @@ export default function TesKonselingPage() {
       return prev.result > current.result ? prev : current;
     });
 
-    const user = getItem("user");
-
-    const hasilTest = await addDoc(collection(db, "hasil-diagnosis"), {
-      user: user?.uid,
-      keluhanTambahan: data.keluhanTambahan,
-      hasil: {
-        kode: maxCf?.kode,
-        nama: maxCf?.title,
-      },
-    });
-
-    navigate(`/hasil-tes/${maxCf?.kode}?idDiagnosis=${hasilTest.id}`);
+    if (user) {
+      try {
+        const hasilTest = await addDoc(collection(db, "hasil-diagnosis"), {
+          user: user?.uid,
+          keluhanTambahan: data.keluhanTambahan,
+          hasil: {
+            kode: maxCf?.kode,
+            nama: maxCf?.title,
+          },
+        });
+        navigate(`/hasil-tes/${maxCf?.kode}?idDiagnosis=${hasilTest.id}`);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      const hasilTest = {
+        keluhanTambahan: data.keluhanTambahan,
+        hasil: {
+          kode: maxCf?.kode,
+          nama: maxCf?.title,
+        },
+      };
+      sessionStorage.setItem("hasilTest", JSON.stringify(hasilTest));
+      navigate(`/hasil-tes/${maxCf?.kode}`);
+    }
   };
 
   return (
@@ -122,11 +136,11 @@ export default function TesKonselingPage() {
             <br />
           </p>
           <Card bg="beige">
-            <Card.Body className="px-5">
-              <Form onSubmit={handleSubmit(onSubmit)}>
+            <Card.Body className="p-5">
+              <Form className="py-5" onSubmit={handleSubmit(onSubmit)}>
                 {/* Looping question */}
                 {questionConfig?.map((itemQ, indexQ) => (
-                  <div className="quiz" key={indexQ}>
+                  <div className="quiz mb-5 pb-5" key={indexQ}>
                     {/* Nomor Pertanyaan */}
                     <h2 className="quiz-question">{indexQ + 1}.</h2>
                     {/* Nomor Pertanyaan */}
@@ -163,14 +177,7 @@ export default function TesKonselingPage() {
                     {/* Looping Jawaban */}
                   </div>
                 ))}
-                <div className="text-center mb-3">
-                  Apakah ada keluhan tambahan yang ingin disampaikan?
-                </div>
-                <Form.Control
-                  rows={10}
-                  {...register("keluhanTambahan")}
-                  as="textarea"
-                ></Form.Control>
+
                 <div className="mt-3">
                   <Button
                     variant="primary"
@@ -200,6 +207,7 @@ const OptionSelectContainer = styled.label`
   &.checked {
     background: var(--bs-primary);
     color: var(--bs-white);
+    border: 3px solid var(--bs-primary);
   }
   .form-check-input {
     border-width: 3px;
